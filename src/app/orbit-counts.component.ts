@@ -21,12 +21,15 @@ export class OrbitCountsComponent implements OnChanges {
                      {type: 'Telescope',count: 0 }];
   }
 
-  ngOnChanges() {
+  ngOnChanges() { //this function executes when the satellites array changes 
+    //zeroing the quantities
     for (let type of this.typeList){
       type['count'] = 0;
     } 
+    //iterating through the satellites
     for (let satellite of this.satellites){
       let i: number = 0;
+      //iterating through the types until finding the satellite type and increasing the counter
       while (satellite.type.toLowerCase() !== this.typeList[i]['type'].toLowerCase()){
         i++;
       }
