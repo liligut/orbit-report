@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { Satellite } from './satellite';
 
 @Component({
@@ -6,27 +6,32 @@ import { Satellite } from './satellite';
   templateUrl: './orbit-counts.component.html',
   styleUrls: ['./orbit-counts.component.css']
 })
-export class OrbitCountsComponent implements OnInit {
+export class OrbitCountsComponent implements OnChanges {
 
   @Input() satellites: Satellite[];
 
-  typeList : string[];
+  typeList : object[];
   
   constructor() { 
-    this.typeList = ['Space Debris','Communication','Probe','Positioning','Space Station','Telescope'];
+    this.typeList = [{type: 'Space Debris', count: 0 },
+                     {type: 'Communication',count: 0 },
+                     {type:  'Probe',count: 0 },
+                     {type: 'Positioning',count: 0 },
+                     {type: 'Space Station',count: 0},
+                     {type: 'Telescope',count: 0 }];
   }
 
-  ngOnInit() {
-  }
-
-  countType(type : string):number {
-    let count : number = 0;
-    for (let i =0;i<this.satellites.length;i++){
-      if (this.satellites[i].type.toLocaleLowerCase() === type.toLocaleLowerCase()){
-        count += 1;
+  ngOnChanges() {
+    for (let type of this.typeList){
+      type['count'] = 0;
+    } 
+    for (let satellite of this.satellites){
+      let i: number = 0;
+      while (satellite.type.toLowerCase() !== this.typeList[i]['type'].toLowerCase()){
+        i++;
       }
+      this.typeList[i]['count'] += 1;
     }
-    return count;
   }
 
 }
